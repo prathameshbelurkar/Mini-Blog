@@ -14,7 +14,8 @@ Dummy Db
   <post-id>: [
     {
       id: <comment-id>,
-      content: ""
+      content: "",
+      status: 'pending'
     }
   ]
 }
@@ -42,6 +43,7 @@ app.post("/posts/:id/comments", async (req, res) => {
       id: commentId,
       content,
       postId: req.params.id,
+      status: "pending",
     },
   });
   res.status(201).send({
@@ -50,9 +52,29 @@ app.post("/posts/:id/comments", async (req, res) => {
   });
 });
 
-app.post("/events", (req, res) => {
-  const event = req.body;
-  console.log(`${PORT} recieved: ${event.type}`);
+app.post("/events", async (req, res) => {
+  const { type, data } = req.body;
+  console.log(`${PORT} recieved: ${type}`);
+
+  if (type === "CommentModerated") {
+    const { postId, id, status, content } = data;
+    const comments = commentsByPostId[postId];
+
+    const comment = comments.find((comment) => {
+      return comment.id === id;
+    });
+    comment.status = status;
+
+    await axios.post("http://localhost:4005/events", {
+      type: "CommentUpdated",
+      data: {
+        id,
+        status,
+        postId,
+        content,
+      },
+    });
+  }
 
   res.send({});
 });

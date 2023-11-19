@@ -15,6 +15,8 @@ app.post("/events", async (req, res) => {
   axios.post("http://localhost:4000/events", event); // Posts
   axios.post("http://localhost:4001/events", event); // Comments
   axios.post("http://localhost:4006/events", event); // Query
+  axios.post("http://localhost:4007/events", event); // Moderation
+
   res.send({ status: "OK" });
 });
 

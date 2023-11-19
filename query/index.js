@@ -8,7 +8,22 @@ const PORT = 4006;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Dummy Db
+/* 
+Dummy DB
+
+const posts = {
+  <post-id>: {
+    id: <post-id>,
+    comments: [
+      {
+        id: <comment-id>,
+        content: '',
+        status: ''
+      }
+    ],
+  }
+}
+*/
 const posts = {};
 
 app.get("/posts", (req, res) => {
@@ -23,9 +38,19 @@ app.post("/events", (req, res) => {
     posts[id] = { id, title, comments: [] };
   }
   if (type === "CommentCreated") {
-    const { id, content, postId } = data;
+    const { id, content, postId, status } = data;
     const post = posts[postId];
-    post.comments.push({ id, content });
+    post.comments.push({ id, content, status });
+  }
+  if (type === "CommentUpdated") {
+    const { id, content, postId, status } = data;
+
+    const post = posts[postId];
+    const comment = post.comments.find((c) => {
+      return c.id === id;
+    });
+    comment.status = status;
+    comment.content = content;
   }
 
   res.send({});
