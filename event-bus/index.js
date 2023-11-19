@@ -9,12 +9,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
   const event = req.body;
 
   axios.post("http://localhost:4000/events", event); // Posts
   axios.post("http://localhost:4001/events", event); // Comments
-  // axios.post("http://localhost:4002/events", event); // Query
+  axios.post("http://localhost:4006/events", event); // Query
   res.send({ status: "OK" });
 });
 

@@ -37,7 +37,6 @@ app.post("/posts", async (req, res) => {
 app.post("/events", (req, res) => {
   const event = req.body;
   console.log(`${PORT} recieved: ${event.type}`);
-
   res.send({});
 });
 

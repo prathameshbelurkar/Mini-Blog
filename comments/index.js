@@ -7,7 +7,18 @@ const axios = require("axios");
 const app = express();
 const PORT = 4001;
 
-// DUMMY DATA
+/*
+Dummy Db
+
+{
+  <post-id>: [
+    {
+      id: <comment-id>,
+      content: ""
+    }
+  ]
+}
+*/
 const commentsByPostId = {};
 
 app.use(cors());
