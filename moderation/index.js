@@ -7,6 +7,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.post("/events", () => {});
+
 app.listen(PORT, () => {
   console.log(`Moderation is listening on ${PORT}`);
 });
